@@ -29,3 +29,7 @@ Now run the tool. Example Usage:
 ```shell
 python -m parat --help
 ```
+
+```shell
+python -m parat example-command -v
+```

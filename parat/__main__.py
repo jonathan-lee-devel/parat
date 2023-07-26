@@ -1,5 +1,9 @@
 import click
 
-cli = click.CommandCollection(sources=[])
+from parat.cli.example.commands import example_commands
 
-cli()
+# noinspection PyTypeChecker
+cli = click.CommandCollection(sources=[example_commands])
+
+if __name__ == '__main__':
+    cli()
