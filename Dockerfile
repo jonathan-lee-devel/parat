@@ -1,6 +1,6 @@
-FROM python:3.9.4-slim-buster
+FROM python:3.11.4-alpine3.18
 
-RUN pip install poetry==1.2.2
+RUN pip install poetry==1.5.1
 
 # A locale needs to be installed and set for later use by some python packages like click
 ENV LC_ALL=C.UTF-8
@@ -18,7 +18,7 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction --no-ansi --no-root
 
 # Copy the rptrc code into the image
-COPY ./pipeline_download_injector /usr/src/app/pipeline_download_injector/
+COPY ./parat /usr/src/app/parat/
 
 # Run the rptrc
-ENTRYPOINT ["python", "-m", "pipeline_download_injector"]
+ENTRYPOINT ["python", "-m", "parat"]
