@@ -1,6 +1,8 @@
+import logging
 import click
 
 from parat.cli.options import verbose_option
+from parat.utils.logging_utils import initialize_logging
 
 
 @click.group(name='example')
@@ -12,6 +14,6 @@ def example_commands() -> None:
 @example_commands.command()
 @verbose_option
 def example_command(verbose: bool) -> None:
-    print('This is an example command...')
-    if verbose:
-        print('With extra verbose output...')
+    initialize_logging(verbose)
+    logging.info('Example output')
+    logging.debug('Verbose output only')
