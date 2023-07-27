@@ -8,9 +8,9 @@ import time
 import requests
 import urllib3
 
-from pipeline_download_injector.src.enums.http_request_methods import HttpRequestMethod
-from pipeline_download_injector.src.exceptions.request_retry_exception import RequestRetryException
-from pipeline_download_injector.src.utils.http_request_settings import HttpRequestSettings
+from parat.enums.http_request_methods import HttpRequestMethod
+from parat.exceptions.request_retry_exception import RequestRetryException
+from parat.utils.http_request_settings import HttpRequestSettings
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
