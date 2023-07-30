@@ -18,7 +18,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def request_retry_download_file(url: str, max_retry: int, request_settings: HttpRequestSettings, output_file_path: str):
     """
     Function which utilizes local request retry function to download file at specified URL
-    :param url: URL of the file to download
+    :param url: of the file to download
     :param max_retry: Amount of times to retry the request
     :param request_settings: Settings for the request namely body, proxy, and SSL
     :param output_file_path: File path for the response body to be written to
