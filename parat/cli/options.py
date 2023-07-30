@@ -23,3 +23,10 @@ def job_name_option(func):
     """A decorator for the job name command line argument"""
     return click.option('-jn', '--job-name', type=click.STRING, is_flag=False, required=True,
                         help='Job name')(func)
+
+
+def build_number_option(func):
+    """A decorator for the build number command line argument"""
+    return click.option('-bn', '--build-number', type=click.INT, is_flag=False, required=True,
+                        help='Build number')(func)
+
