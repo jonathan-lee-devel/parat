@@ -1,7 +1,6 @@
 import logging
 import os
 import yaml
-
 import click
 from dotenv import load_dotenv
 
