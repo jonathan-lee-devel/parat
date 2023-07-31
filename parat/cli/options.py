@@ -30,3 +30,14 @@ def build_number_option(func):
     return click.option('-bn', '--build-number', type=click.INT, is_flag=False, required=True,
                         help='Build number')(func)
 
+
+def url_end_option(func):
+    """A decorator for the URL end command line argument"""
+    return click.option('-ue', '--url-end', type=click.STRING, is_flag=False, required=True,
+                        help='URL end')(func)
+
+
+def build_jobs_yaml_file_option(func):
+    """A decorator for the build jobs YAML file"""
+    return click.option('-bjy', '--build-jobs-yaml', type=click.STRING, is_flag=False, required=True,
+                        help='Build jobs YAML file path')(func)
