@@ -39,11 +39,15 @@ def get_jenkins_job_dict(jenkins_request_settings: JenkinsRequestSettings, job_n
 
 def get_jenkins_job_dict_url_end(jenkins_request_settings: JenkinsRequestSettings, url_end: str):
     validate_max_retry(jenkins_request_settings.max_retry)
-    return request_retry(HttpRequestMethod.GET,
-                         f'${jenkins_request_settings.url}/{url_end}/api/json',
-                         jenkins_request_settings.max_retry,
-                         HttpRequestSettings(None, None, False, jenkins_request_settings.auth)
-                         ).json()
+    try:
+        response_dict = request_retry(HttpRequestMethod.GET,
+                                      f'{jenkins_request_settings.url}/{url_end}/api/json',
+                                      jenkins_request_settings.max_retry,
+                                      HttpRequestSettings(None, None, False, jenkins_request_settings.auth)
+                                      ).json()
+        return response_dict
+    except RequestRetryException:
+        return None
 
 
 def start_jenkins_build(jenkins_request_settings: JenkinsRequestSettings, job_name: str):
