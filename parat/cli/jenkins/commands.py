@@ -60,12 +60,16 @@ def start_build_jobs_yaml(verbose: bool, build_jobs_yaml: str) -> None:
     load_dotenv()
     initialize_logging(verbose)
     logging.info(f'Parsing YAML: {build_jobs_yaml}...')
+    successful_jobs = []
+    failed_jobs = []
     with open(build_jobs_yaml, 'r') as yaml_file_contents:
         build_jobs_dict = yaml.safe_load(yaml_file_contents)
         remaining_builds_dict = build_jobs_dict
         for build_host_index in range(len(build_jobs_dict[BUILD][HOSTS])):
             build_host = build_jobs_dict[BUILD][HOSTS][build_host_index]
             jobs_info_dict = process_build_host(build_host)
+            successful_jobs.append(jobs_info_dict['successful_jobs'])
+            failed_jobs.append(jobs_info_dict['failed_jobs'])
     logging_line_break()
     logging.info(f'Run of {build_jobs_yaml} completed:')
     logging.info(f'Successful builds: {jobs_info_dict["successful_jobs"]}')
