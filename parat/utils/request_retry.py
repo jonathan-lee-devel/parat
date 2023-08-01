@@ -52,7 +52,7 @@ def request_retry(request_method: HttpRequestMethod, url: str, max_retry: int, r
                 break
             raise requests.exceptions.RequestException
         except requests.exceptions.RequestException:
-            logging.error(f'Could not make the {request_method.name} request')
+            logging.debug(f'Could not make the {request_method.name} request')
             if response is not None:
                 logging.debug(f'Response status code: {str(response.status_code)}')
                 logging.debug(f'Response reason: {str(response.reason)}')

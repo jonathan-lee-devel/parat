@@ -37,6 +37,12 @@ def url_end_option(func):
                         help='URL end')(func)
 
 
+def trim_url_end_option_util(url_end_param: str) -> str:
+    url_end_param = url_end_param.removeprefix('/')
+    url_end_param = url_end_param.removesuffix('/')
+    return url_end_param
+
+
 def build_jobs_yaml_file_option(func):
     """A decorator for the build jobs YAML file"""
     return click.option('-bjy', '--build-jobs-yaml', type=click.STRING, is_flag=False, required=True,

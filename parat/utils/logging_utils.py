@@ -32,10 +32,8 @@ def set_logging_verbosity_level(logger, verbose):
     console = logger.handlers[0]
     if verbose:
         console.setLevel(logging.DEBUG)
-        logging.debug('Logging Level set to DEBUG')
     else:
         console.setLevel(logging.INFO)
-        logging.info('Logging Level set to INFO')
 
 
 def logging_line_break():

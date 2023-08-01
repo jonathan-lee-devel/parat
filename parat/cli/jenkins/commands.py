@@ -7,9 +7,10 @@ from http import HTTPStatus
 from dotenv import load_dotenv
 
 from parat.cli.options import verbose_option, job_name_option, build_number_option, url_end_option, \
-    build_jobs_yaml_file_option
+    build_jobs_yaml_file_option, trim_url_end_option_util
 from parat.constants import BUILD, HOSTS, JENKINS_URL, JENKINS_USER, JENKINS_TOKEN, SUCCESSFUL_JOBS, FAILED_JOBS, END
 from parat.use_cases.jenkins_builds import process_build_host
+from parat.use_cases.jenkins_job_info import get_jenkins_job_result_status
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_utils import get_jenkins_console_output, get_jenkins_job_dict, start_jenkins_build, \
     start_jenkins_build_url_end
@@ -44,6 +45,7 @@ def start_build(verbose: bool, job_name: str) -> None:
 def start_build_url(verbose: bool, url_end: str) -> None:
     load_dotenv()
     initialize_logging(verbose)
+    url_end = trim_url_end_option_util(url_end)
     logging.info(f'Kicking off build ({url_end})...')
     response_status_code = start_jenkins_build_url_end(
         JenkinsRequestSettings(os.getenv(JENKINS_URL), (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)), 1),
@@ -116,3 +118,17 @@ def get_jenkins_json(verbose: bool, job_name: str, build_number: int) -> None:
         JenkinsRequestSettings(os.getenv(JENKINS_URL), (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)), 1),
         job_name, build_number)
     logging.info(f'Jenkins JSON: \n{jenkins_dict}')
+
+
+@jenkins_commands.command()
+@verbose_option
+@url_end_option
+@build_number_option
+def get_jenkins_job_status(verbose: bool, url_end: str, build_number: int) -> None:
+    load_dotenv()
+    initialize_logging(verbose)
+    url_end = trim_url_end_option_util(url_end)
+    logging.info(f'Getting job status for ({url_end}) build number #{build_number}...')
+    job_status = get_jenkins_job_result_status(
+        JenkinsRequestSettings(os.getenv(JENKINS_URL), (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)), 1), url_end, build_number)
+    logging.info(f'Jenkins job ({url_end}) build number #{build_number} status: {job_status}')
