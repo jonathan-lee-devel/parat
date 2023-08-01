@@ -50,7 +50,8 @@ def get_jenkins_job_dict_url_end(jenkins_request_settings: JenkinsRequestSetting
         return None
 
 
-def get_jenkins_job_dict_url_end_build_number(jenkins_request_settings: JenkinsRequestSettings, url_end: str, build_number: int):
+def get_jenkins_job_dict_url_end_build_number(jenkins_request_settings: JenkinsRequestSettings, url_end: str,
+                                              build_number: int):
     validate_max_retry(jenkins_request_settings.max_retry)
     try:
         response_dict = request_retry(HttpRequestMethod.GET,
@@ -61,6 +62,7 @@ def get_jenkins_job_dict_url_end_build_number(jenkins_request_settings: JenkinsR
         return response_dict
     except RequestRetryException:
         return None
+
 
 def start_jenkins_build(jenkins_request_settings: JenkinsRequestSettings, job_name: str):
     validate_max_retry(jenkins_request_settings.max_retry)
