@@ -30,10 +30,6 @@ Now run the tool. Example Usage:
 python -m parat --help
 ```
 
-```shell
-python -m parat example-command -v
-```
-
 ## Commands
 ### start-build-jobs-yaml
 Example input:
