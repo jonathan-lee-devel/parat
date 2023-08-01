@@ -4,4 +4,5 @@ build:
       jobs:
         - end: 'job/TestJob'
         - end: 'job/AnotherTestJob'
+        - end: 'job/LongRunningJob'
         - end: 'job/SomeOtherJob'

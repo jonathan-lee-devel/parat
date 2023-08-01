@@ -54,9 +54,9 @@ def request_retry(request_method: HttpRequestMethod, url: str, max_retry: int, r
         except requests.exceptions.RequestException:
             logging.error(f'Could not make the {request_method.name} request')
             if response is not None:
-                logging.error(f'Response status code: {str(response.status_code)}')
-                logging.error(f'Response reason: {str(response.reason)}')
-                logging.error(f'Response output: {str(response.text)}')
+                logging.debug(f'Response status code: {str(response.status_code)}')
+                logging.debug(f'Response reason: {str(response.reason)}')
+                logging.debug(f'Response output: {str(response.text)}')
 
                 if response.status_code == requests.codes.bad_request:
                     raise RequestRetryException('Bad request detected') from requests.exceptions.RequestException
