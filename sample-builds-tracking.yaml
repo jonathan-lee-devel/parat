@@ -1,11 +1,11 @@
 build:
   hosts:
   - jobs:
-    - build_index: 47
+    - build_index: 48
       end: job/TestJob
-    - build_index: 24
+    - build_index: 25
       end: job/AnotherTestJob
-    - build_index: 9
+    - build_index: 10
       end: job/LongRunningJob
     - end: job/SomeOtherJob
     url: http://localhost:8080

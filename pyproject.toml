@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "parat"
 version = "0.1.0"
-description = ""
+description = "Packaging and Release Automation Tool"
 authors = ["Jonathan Lee <jonathan.lee.devel@gmail.com>"]
 readme = "README.md"
 license = "GPL-3.0-or-later"

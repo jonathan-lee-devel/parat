@@ -7,8 +7,9 @@ from http import HTTPStatus
 from dotenv import load_dotenv
 
 from parat.cli.options import verbose_option, job_name_option, build_number_option, url_end_option, \
-    build_jobs_yaml_file_option, trim_url_end_option_util
+    build_jobs_yaml_file_option, trim_url_end_option_util, build_jobs_tracking_yaml_file_option
 from parat.constants import BUILD, HOSTS, JENKINS_URL, JENKINS_USER, JENKINS_TOKEN, SUCCESSFUL_JOBS, FAILED_JOBS, END
+from parat.use_cases.jenkins_build_job_tracking import validate_jenkins_job_build_tracking_yaml
 from parat.use_cases.jenkins_builds import process_build_host
 from parat.use_cases.jenkins_job_info import get_jenkins_job_result_status
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
@@ -76,7 +77,7 @@ def start_build_jobs_yaml(verbose: bool, build_jobs_yaml: str) -> None:
     logging_line_break()
     logging.info(f'Run of {build_jobs_yaml} completed:')
     logging.info(f'Successful builds: {jobs_info_dict[SUCCESSFUL_JOBS]}')
-    tracking_output_filename = build_jobs_yaml.replace('.yaml', '-tracking-output.yaml')
+    tracking_output_filename = build_jobs_yaml.replace('.yaml', '-tracking.yaml')
     logging.info(f'Writing build numbers to track to {tracking_output_filename}...')
     with open(tracking_output_filename, 'w') as output_file:
         yaml.dump(build_jobs_dict, output_file)
@@ -86,7 +87,7 @@ def start_build_jobs_yaml(verbose: bool, build_jobs_yaml: str) -> None:
         for successful_job in jobs_info_dict[SUCCESSFUL_JOBS]:
             del remaining_builds_dict[BUILD][HOSTS][build_host_index]['jobs'][successful_job['index'] - delete_count]
             delete_count += 1
-        output_file_name = build_jobs_yaml.replace('.yaml', '-remaining-output.yaml')
+        output_file_name = build_jobs_yaml.replace('.yaml', '-remaining.yaml')
         logging.info(f'Outputting remaining (failed) jobs to {output_file_name}...')
         with open(output_file_name, 'w') as output_file:
             yaml.dump(remaining_builds_dict, output_file)
@@ -130,5 +131,22 @@ def get_jenkins_job_status(verbose: bool, url_end: str, build_number: int) -> No
     url_end = trim_url_end_option_util(url_end)
     logging.info(f'Getting job status for ({url_end}) build number #{build_number}...')
     job_status = get_jenkins_job_result_status(
-        JenkinsRequestSettings(os.getenv(JENKINS_URL), (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)), 1), url_end, build_number)
+        JenkinsRequestSettings(os.getenv(JENKINS_URL), (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)), 1), url_end,
+        build_number)
     logging.info(f'Jenkins job ({url_end}) build number #{build_number} status: {job_status}')
+
+
+@jenkins_commands.command()
+@verbose_option
+@build_jobs_tracking_yaml_file_option
+def track_build_jobs_status(verbose: bool, build_jobs_tracking_yaml: str):
+    load_dotenv()
+    initialize_logging(verbose)
+    logging.info(f'Validating tracking build jobs YAML: {build_jobs_tracking_yaml}...')
+    validation_errors = validate_jenkins_job_build_tracking_yaml(build_jobs_tracking_yaml)
+    if len(validation_errors) > 0:
+        logging.error(f'Invalid build jobs tracking YAML: {build_jobs_tracking_yaml}, Validation errors:')
+        for validation_error in validation_errors:
+            logging.error(f'Validation Failed for: field: {validation_error.field} -> {validation_error.message}')
+        exit(1)
+    logging.info(f'Successfully validated tracking builds jobs YAML: {build_jobs_tracking_yaml}!')
