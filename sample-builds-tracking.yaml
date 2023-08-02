@@ -3,9 +3,11 @@ build:
   - jobs:
     - build_index: 50
       end: job/TestJob
+      status: SUCCESS
     - build_index: 27
       end: job/AnotherTestJob
+      status: SUCCESS
     - build_index: 30
       end: job/LongRunningJob
-    - end: job/SomeOtherJob
+      status: SUCCESS
     url: http://localhost:8080

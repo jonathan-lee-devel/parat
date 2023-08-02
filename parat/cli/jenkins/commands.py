@@ -158,3 +158,7 @@ def track_build_jobs_status(verbose: bool, build_jobs_tracking_yaml: str):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(track_multiple_build_job_statuses(build_jobs_tracking_dict))
         loop.close()
+    with open(build_jobs_tracking_yaml, 'w') as build_jobs_tracking_file:
+        yaml.dump(build_jobs_tracking_dict, build_jobs_tracking_file)
+    logging.info(f'Wrote statuses to {build_jobs_tracking_yaml}')
+

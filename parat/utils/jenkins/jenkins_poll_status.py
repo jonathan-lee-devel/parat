@@ -1,11 +1,20 @@
 import asyncio
 import logging
 import os
+from typing import Any
 
 from parat.constants import END, JENKINS_USER, JENKINS_TOKEN, BUILD, HOSTS, JOBS, URL
 from parat.enums.jenkins import JenkinsJobStatus
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_utils import get_jenkins_job_dict_url_end_build_number
+
+
+async def update_build_jobs_tracking_dict(build_jobs_statuses: tuple[Any], build_jobs_tracking_dict: dict):
+    for build_job_status in build_jobs_statuses:
+        for host in build_jobs_tracking_dict[BUILD][HOSTS]:
+            for job in host[JOBS]:
+                if build_job_status['host'] == host[URL] and build_job_status[END] == job[END] and build_job_status['build_number'] == job['build_index']:
+                    job['status'] = build_job_status['status'].name
 
 
 async def track_multiple_build_job_statuses(build_jobs_tracking_dict: dict):
@@ -20,7 +29,7 @@ async def track_multiple_build_job_statuses(build_jobs_tracking_dict: dict):
         url_combo['job']['end'], url_combo['job']['build_index']
     ) for url_combo in url_combos]
     statuses = await asyncio.gather(*call_list)
-    logging.info(statuses)
+    await update_build_jobs_tracking_dict(statuses, build_jobs_tracking_dict)
 
 
 async def poll_jenkins_job_for_success_or_unstable_status(jenkins_request_settings: JenkinsRequestSettings,
@@ -77,4 +86,5 @@ async def poll_jenkins_job_for_success_or_unstable_status(jenkins_request_settin
             logging.info(f'Continuing to poll {url_end} #{build_number} with status: {response_dict["result"]}...')
             await asyncio.sleep(60)
     logging.info(f'Polling for {url_end} #{build_number} complete with status {jenkins_job_status}!')
-    return {END: url_end, 'build_number': build_number, 'status': jenkins_job_status}
+    return {'host': jenkins_request_settings.url, END: url_end, 'build_number': build_number,
+            'status': jenkins_job_status}
