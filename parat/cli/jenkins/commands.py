@@ -1,18 +1,20 @@
+import asyncio
 import logging
 import os
+from http import HTTPStatus
+
 import click
 import yaml
-
-from http import HTTPStatus
 from dotenv import load_dotenv
 
 from parat.cli.options import verbose_option, job_name_option, build_number_option, url_end_option, \
     build_jobs_yaml_file_option, trim_url_end_option_util, build_jobs_tracking_yaml_file_option
-from parat.constants import BUILD, HOSTS, JENKINS_URL, JENKINS_USER, JENKINS_TOKEN, SUCCESSFUL_JOBS, FAILED_JOBS, END
+from parat.constants import BUILD, HOSTS, JENKINS_URL, JENKINS_USER, JENKINS_TOKEN, SUCCESSFUL_JOBS, FAILED_JOBS
 from parat.use_cases.jenkins_build_job_tracking import validate_jenkins_job_build_tracking_yaml
 from parat.use_cases.jenkins_builds import process_build_host
 from parat.use_cases.jenkins_job_info import get_jenkins_job_result_status
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
+from parat.utils.jenkins.jenkins_poll_status import track_multiple_build_job_statuses
 from parat.utils.jenkins.jenkins_utils import get_jenkins_console_output, get_jenkins_job_dict, start_jenkins_build, \
     start_jenkins_build_url_end
 from parat.utils.logging_utils import initialize_logging, logging_line_break
@@ -150,3 +152,9 @@ def track_build_jobs_status(verbose: bool, build_jobs_tracking_yaml: str):
             logging.error(f'Validation Failed for: field: {validation_error.field} -> {validation_error.message}')
         exit(1)
     logging.info(f'Successfully validated tracking builds jobs YAML: {build_jobs_tracking_yaml}!')
+    with open(build_jobs_tracking_yaml, 'r') as build_jobs_tracking_file:
+        build_jobs_tracking_dict = yaml.safe_load(build_jobs_tracking_file)
+        logging.info('Tracking builds asynchronously...')
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(track_multiple_build_job_statuses(build_jobs_tracking_dict))
+        loop.close()

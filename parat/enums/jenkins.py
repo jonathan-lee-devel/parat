@@ -6,3 +6,4 @@ class JenkinsJobStatus(Enum):
     SUCCESS = 1
     UNSTABLE = 2
     FAILURE = 3
+    ABORTED = 4
