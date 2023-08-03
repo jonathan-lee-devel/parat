@@ -90,3 +90,7 @@ build:
     - build_index: 35
       end: job/LongRunningJob
 ```
+Point the command to the file using the --build-jobs-tracking-yaml / -bjty option
+```shell
+python -m parat track-build-jobs-status -bjty sample-builds-tracking.yaml
+```
