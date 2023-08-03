@@ -76,3 +76,17 @@ build:
     
 ```
 Alternatively, you can re-run the failed builds automatically by providing the remaining output yaml file as input.
+### track-build-jobs-status
+Example input:
+```yaml
+build:
+  hosts:
+  - url: http://localhost:8080
+    jobs:
+    - build_index: 55
+      end: job/TestJob
+    - build_index: 32
+      end: job/AnotherTestJob
+    - build_index: 35
+      end: job/LongRunningJob
+```

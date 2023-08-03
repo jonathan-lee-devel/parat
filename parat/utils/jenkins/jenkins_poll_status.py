@@ -42,7 +42,7 @@ async def poll_jenkins_job_for_success_or_unstable_status(jenkins_request_settin
     while should_poll:
         response_dict = get_jenkins_job_dict_url_end_build_number(jenkins_request_settings, url_end, build_number)
         if response_dict is None:
-            logging.info(f'None response for {url_end} #{build_number}')
+            logging.debug(f'None response for {url_end} #{build_number}')
             none_responses_count += 1
             if none_responses_count >= 5:
                 logging.info(f'None response for {url_end} #{build_number} None Response #{none_responses_count}')
@@ -56,17 +56,17 @@ async def poll_jenkins_job_for_success_or_unstable_status(jenkins_request_settin
                 await asyncio.sleep(60)
         elif response_dict['result'] == 'SUCCESS':
             jenkins_job_status = JenkinsJobStatus.SUCCESS
-            logging.info(f'Result of {url_end} #{build_number} is {jenkins_job_status}, stopping polling!')
+            logging.debug(f'Result of {url_end} #{build_number} is {jenkins_job_status}, stopping polling!')
             break
         elif response_dict['result'] == 'UNSTABLE':
             jenkins_job_status = JenkinsJobStatus.UNSTABLE
-            logging.info(f'Result of {url_end} #{build_number} is {jenkins_job_status}, stopping polling!')
+            logging.debug(f'Result of {url_end} #{build_number} is {jenkins_job_status}, stopping polling!')
             break
         elif response_dict['result'] == 'UNKNOWN':
             logging.info(f'UNKNOWN for {url_end} #{build_number}')
             unknown_responses_count += 1
             if unknown_responses_count >= 5:
-                logging.info(f'UNKNOWN for {url_end} #{build_number} {unknown_responses_count=}')
+                logging.debug(f'UNKNOWN for {url_end} #{build_number} {unknown_responses_count=}')
                 jenkins_job_status = JenkinsJobStatus.UNKNOWN
                 logging.error(
                     f'Result of {url_end} #{build_number} is {jenkins_job_status} for the last {unknown_responses_count} attempts, stopping polling!')
@@ -83,7 +83,7 @@ async def poll_jenkins_job_for_success_or_unstable_status(jenkins_request_settin
             jenkins_job_status = JenkinsJobStatus.ABORTED
             logging.error(f'Result of {url_end} #{build_number} is {jenkins_job_status}, stopping polling!')
         else:
-            logging.info(f'Continuing to poll {url_end} #{build_number} with status: {response_dict["result"]}...')
+            logging.info(f'Continuing to poll {url_end} #{build_number} with status: PENDING...')
             await asyncio.sleep(60)
     logging.info(f'Polling for {url_end} #{build_number} complete with status {jenkins_job_status}!')
     return {'host': jenkins_request_settings.url, END: url_end, 'build_number': build_number,

@@ -78,13 +78,13 @@ def start_build_jobs_yaml(verbose: bool, build_jobs_yaml: str) -> None:
             failed_jobs.append(jobs_info_dict[FAILED_JOBS])
     logging_line_break()
     logging.info(f'Run of {build_jobs_yaml} completed:')
-    logging.info(f'Successful builds: {jobs_info_dict[SUCCESSFUL_JOBS]}')
+    logging.debug(f'Successful builds: {jobs_info_dict[SUCCESSFUL_JOBS]}')
     tracking_output_filename = build_jobs_yaml.replace('.yaml', '-tracking.yaml')
     logging.info(f'Writing build numbers to track to {tracking_output_filename}...')
     with open(tracking_output_filename, 'w') as output_file:
         yaml.dump(build_jobs_dict, output_file)
     if len(jobs_info_dict[FAILED_JOBS]) > 0:
-        logging.error(f'Failed builds: {jobs_info_dict[FAILED_JOBS]}')
+        logging.debug(f'Failed builds: {jobs_info_dict[FAILED_JOBS]}')
         delete_count = 0
         for successful_job in jobs_info_dict[SUCCESSFUL_JOBS]:
             del remaining_builds_dict[BUILD][HOSTS][build_host_index]['jobs'][successful_job['index'] - delete_count]
