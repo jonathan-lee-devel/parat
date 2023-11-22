@@ -104,7 +104,10 @@ def get_console_output(verbose: bool, job_name: str, build_number: int) -> None:
     initialize_logging(verbose)
     logging.info(f'Getting console output for ({job_name}) build number #{build_number}...')
     console_output = get_jenkins_console_output(
-        JenkinsRequestSettings(os.getenv(JENKINS_URL), (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)), 1),
+        JenkinsRequestSettings(
+            os.getenv(JENKINS_URL),
+            (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
+            1),
         job_name, build_number)
     logging.info(f'Console output: \n{console_output}')
 

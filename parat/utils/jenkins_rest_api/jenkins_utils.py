@@ -10,7 +10,10 @@ def validate_max_retry(max_retry: int):
         raise Exception('Max retry value invalid')
 
 
-def get_jenkins_console_output(jenkins_request_settings: JenkinsRequestSettings, job_name: str, build_number: int):
+def get_jenkins_console_output(
+        jenkins_request_settings: JenkinsRequestSettings,
+        job_name: str,
+        build_number: int):
     validate_max_retry(jenkins_request_settings.max_retry)
     return request_retry(HttpRequestMethod.GET,
                          f'{jenkins_request_settings.url}/job/{job_name}/{build_number}/logText/progressiveText?start=0',

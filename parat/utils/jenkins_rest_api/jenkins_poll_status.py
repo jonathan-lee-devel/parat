@@ -9,11 +9,15 @@ from parat.utils.jenkins_rest_api.jekins_request_settings import JenkinsRequestS
 from parat.utils.jenkins_rest_api.jenkins_utils import get_jenkins_job_dict_url_end_build_number
 
 
-async def update_build_jobs_tracking_dict(build_jobs_statuses: tuple[Any], build_jobs_tracking_dict: dict):
+async def update_build_jobs_tracking_dict(
+        build_jobs_statuses: tuple[Any],
+        build_jobs_tracking_dict: dict):
     for build_job_status in build_jobs_statuses:
         for host in build_jobs_tracking_dict[BUILD][HOSTS]:
             for job in host[JOBS]:
-                if build_job_status['host'] == host[URL] and build_job_status[END] == job[END] and build_job_status['build_number'] == job['build_index']:
+                if (build_job_status['host'] == host[URL] and
+                        build_job_status[END] == job[END] and
+                        build_job_status['build_number'] == job['build_index']):
                     job['status'] = build_job_status['status'].name
 
 

@@ -15,7 +15,11 @@ from parat.utils.http_request_settings import HttpRequestSettings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-def request_retry_download_file(url: str, max_retry: int, request_settings: HttpRequestSettings, output_file_path: str):
+def request_retry_download_file(
+        url: str,
+        max_retry: int,
+        request_settings: HttpRequestSettings,
+        output_file_path: str):
     """
     Function which utilizes local request retry function to download file at specified URL
     :param url: of the file to download
@@ -30,7 +34,11 @@ def request_retry_download_file(url: str, max_retry: int, request_settings: Http
         output_file.write(response.text)
 
 
-def request_retry(request_method: HttpRequestMethod, url: str, max_retry: int, request_settings: HttpRequestSettings):
+def request_retry(
+        request_method: HttpRequestMethod,
+        url: str,
+        max_retry: int,
+        request_settings: HttpRequestSettings):
     """
     Function to retry requests if the target host is not found. Geometric retry is used here.
     :param request_method: Which REST request is being conducted
