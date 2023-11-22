@@ -1,0 +1,25 @@
+{
+  "name": "parat",
+  "version": "0.1.0",
+  "description": "Packaging and Release Automation Tool",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathan-lee-devel/parat.git"
+  },
+  "keywords": [
+    "Release",
+    "Automation"
+  ],
+  "author": "Jonathan Lee <jonathan.lee.devel@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/jonathan-lee-devel/parat/issues"
+  },
+  "homepage": "https://github.com/jonathan-lee-devel/parat#readme",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  },
+  "scripts": {
+    "prepare": "husky install"
+  }
+}
