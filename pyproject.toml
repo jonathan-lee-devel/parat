@@ -8,13 +8,13 @@ license = "GPL-3.0-or-later"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-click = "^8.1.6"
+click = "^8.1.7"
 requests = "^2.31.0"
 python-dotenv = "^1.0.0"
 pyyaml = "^6.0.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.2.0"
+pytest = "^7.4.3"
 
 
 [build-system]
