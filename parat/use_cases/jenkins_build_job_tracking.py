@@ -1,7 +1,7 @@
 import yaml
 
 from parat.constants import BUILD, HOSTS, URL, JOBS, END
-from parat.utils.jenkins.validation_error import ValidationError
+from parat.utils.jenkins_rest_api.validation_error import ValidationError
 
 
 def validate_jenkins_job_build_tracking_yaml(build_jobs_tracking_yaml_file_path: str) -> list:

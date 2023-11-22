@@ -5,8 +5,8 @@ from typing import Any
 
 from parat.constants import END, JENKINS_USER, JENKINS_TOKEN, BUILD, HOSTS, JOBS, URL
 from parat.enums.jenkins import JenkinsJobStatus
-from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
-from parat.utils.jenkins.jenkins_utils import get_jenkins_job_dict_url_end_build_number
+from parat.utils.jenkins_rest_api.jekins_request_settings import JenkinsRequestSettings
+from parat.utils.jenkins_rest_api.jenkins_utils import get_jenkins_job_dict_url_end_build_number
 
 
 async def update_build_jobs_tracking_dict(build_jobs_statuses: tuple[Any], build_jobs_tracking_dict: dict):

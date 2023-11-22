@@ -13,14 +13,14 @@ from parat.constants import BUILD, HOSTS, JENKINS_URL, JENKINS_USER, JENKINS_TOK
 from parat.use_cases.jenkins_build_job_tracking import validate_jenkins_job_build_tracking_yaml
 from parat.use_cases.jenkins_builds import process_build_host
 from parat.use_cases.jenkins_job_info import get_jenkins_job_result_status
-from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
-from parat.utils.jenkins.jenkins_poll_status import track_multiple_build_job_statuses
-from parat.utils.jenkins.jenkins_utils import get_jenkins_console_output, get_jenkins_job_dict, start_jenkins_build, \
+from parat.utils.jenkins_rest_api.jekins_request_settings import JenkinsRequestSettings
+from parat.utils.jenkins_rest_api.jenkins_poll_status import track_multiple_build_job_statuses
+from parat.utils.jenkins_rest_api.jenkins_utils import get_jenkins_console_output, get_jenkins_job_dict, start_jenkins_build, \
     start_jenkins_build_url_end
 from parat.utils.logging_utils import initialize_logging, logging_line_break
 
 
-@click.group(name='jenkins')
+@click.group(name='jenkins_rest_api')
 def jenkins_commands() -> None:
     """Entry point"""
     pass
