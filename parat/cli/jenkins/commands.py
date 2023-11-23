@@ -38,6 +38,26 @@ def jenkins_commands() -> None:
 
 @jenkins_commands.command()
 @verbose_option
+def example_output(verbose: bool) -> None:
+    """Displays example output for Jenkins multi-job run"""
+    load_dotenv()
+    initialize_logging(verbose)
+    logging_line_break()
+    logging.info('\n%s', yaml.dump({
+        'jobs': [
+            {
+                'name': 'TestJob',
+                'build': 2,
+                'status': 'SUCCESS',
+                'url': 'http://localhost:8080/job/TestJob/2'
+            }
+        ]
+    }))
+    logging_line_break()
+
+
+@jenkins_commands.command()
+@verbose_option
 @job_name_option
 def start_build(verbose: bool, job_name: str) -> None:
     """Kicks off a Jenkins job build based on job name"""

@@ -20,5 +20,13 @@ pipeline {
             }
         }
 
+        stage("Docker Run Example-Output") {
+            steps {
+                script {
+                    sh 'docker run --rm jonathanleedev/parat:latest example-output'
+                }
+            }
+        }
+
     }
 }
