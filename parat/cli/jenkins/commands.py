@@ -40,7 +40,7 @@ def jenkins_commands() -> None:
 @verbose_option
 @job_name_option
 def start_build(verbose: bool, job_name: str) -> None:
-    """CLI command which kicks off a Jenkins job build based on job name"""
+    """Kicks off a Jenkins job build based on job name"""
     load_dotenv()
     initialize_logging(verbose)
     logging.info('Kicking off build (%s)...', job_name)
@@ -60,7 +60,7 @@ def start_build(verbose: bool, job_name: str) -> None:
 @verbose_option
 @url_end_option
 def start_build_url(verbose: bool, url_end: str) -> None:
-    """CLI command which starts Jenkins job based on URL ending"""
+    """Starts Jenkins job based on URL ending"""
     load_dotenv()
     initialize_logging(verbose)
     url_end = trim_url_end_option_util(url_end)
@@ -81,7 +81,7 @@ def start_build_url(verbose: bool, url_end: str) -> None:
 @verbose_option
 @build_jobs_yaml_file_option
 def start_build_jobs_yaml(verbose: bool, build_jobs_yaml: str) -> None:
-    """CLI command which kicks off Jenkins jobs based on YAML input"""
+    """Kicks off Jenkins jobs based on YAML input"""
     load_dotenv()
     initialize_logging(verbose)
     logging.info('Parsing YAML: %s...', build_jobs_yaml)
@@ -121,7 +121,7 @@ def start_build_jobs_yaml(verbose: bool, build_jobs_yaml: str) -> None:
 @job_name_option
 @build_number_option
 def get_console_output(verbose: bool, job_name: str, build_number: int) -> None:
-    """CLI command which gets console output for specific Jenkins job build"""
+    """Gets console output for specific Jenkins job build"""
     load_dotenv()
     initialize_logging(verbose)
     logging.info('Getting console output for (%s) build number #%s...',
@@ -141,7 +141,7 @@ def get_console_output(verbose: bool, job_name: str, build_number: int) -> None:
 @job_name_option
 @build_number_option
 def get_jenkins_json(verbose: bool, job_name: str, build_number: int) -> None:
-    """CLI command which gets Jenkins job build JSON data from REST API"""
+    """Gets Jenkins job build JSON data from REST API"""
     load_dotenv()
     initialize_logging(verbose)
     logging.info('Getting API JSON for (%s) build number #%s...',
@@ -161,7 +161,7 @@ def get_jenkins_json(verbose: bool, job_name: str, build_number: int) -> None:
 @url_end_option
 @build_number_option
 def get_jenkins_job_status(verbose: bool, url_end: str, build_number: int) -> None:
-    """CLI command which gets jenkins job status"""
+    """Gets jenkins job status"""
     load_dotenv()
     initialize_logging(verbose)
     url_end = trim_url_end_option_util(url_end)
@@ -183,7 +183,7 @@ def get_jenkins_job_status(verbose: bool, url_end: str, build_number: int) -> No
 @verbose_option
 @build_jobs_tracking_yaml_file_option
 def track_build_jobs_status(verbose: bool, build_jobs_tracking_yaml: str):
-    """CLI command which tracks build job status"""
+    """Tracks build job status"""
     load_dotenv()
     initialize_logging(verbose)
     logging.info('Validating tracking build jobs YAML: %s...', build_jobs_tracking_yaml)
