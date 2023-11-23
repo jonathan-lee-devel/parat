@@ -1,4 +1,10 @@
+"""Data class module for HTTP request settings"""
+from dataclasses import dataclass
+
+
+@dataclass
 class HttpRequestSettings:
+    """Data class for HTTP request settings"""
     def __init__(
             self,
             body: dict = None,

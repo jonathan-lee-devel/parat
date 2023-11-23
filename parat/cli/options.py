@@ -1,3 +1,4 @@
+"""CLI command options"""
 import click
 
 
@@ -15,8 +16,14 @@ def input_file_option(func):
 
 def release_specifier_option(func):
     """A decorator for the release specifier command line argument"""
-    return click.option('-rs', '--release-specifier', type=click.STRING, is_flag=False, required=True,
-                        help='Release specifier')(func)
+    return click.option(
+        '-rs',
+        '--release-specifier',
+        type=click.STRING,
+        is_flag=False,
+        required=True,
+        help='Release specifier'
+    )(func)
 
 
 def job_name_option(func):
@@ -38,6 +45,7 @@ def url_end_option(func):
 
 
 def trim_url_end_option_util(url_end_param: str) -> str:
+    """Helper function which trims slashes from beginning and end of URL end params"""
     url_end_param = url_end_param.removeprefix('/')
     url_end_param = url_end_param.removesuffix('/')
     return url_end_param
@@ -45,11 +53,21 @@ def trim_url_end_option_util(url_end_param: str) -> str:
 
 def build_jobs_yaml_file_option(func):
     """A decorator for the build jobs YAML file"""
-    return click.option('-bjy', '--build-jobs-yaml', type=click.STRING, is_flag=False, required=True,
-                        help='Build jobs YAML file path')(func)
+    return click.option('-bjy',
+                        '--build-jobs-yaml',
+                        type=click.STRING,
+                        is_flag=False,
+                        required=True,
+                        help='Build jobs YAML file path'
+                        )(func)
 
 
 def build_jobs_tracking_yaml_file_option(func):
     """A decorator for the build jobs tracking YAML file"""
-    return click.option('-bjty', '--build-jobs-tracking-yaml', type=click.STRING, is_flag=False, required=True,
-                        help='Build jobs tracking YAML file path')(func)
+    return click.option('-bjty',
+                        '--build-jobs-tracking-yaml',
+                        type=click.STRING,
+                        is_flag=False,
+                        required=True,
+                        help='Build jobs tracking YAML file path'
+                        )(func)

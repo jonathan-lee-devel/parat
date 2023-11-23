@@ -29,8 +29,8 @@ def request_retry_download_file(
     :return:
     """
     response = request_retry(HttpRequestMethod.GET, url, max_retry, request_settings)
-    logging.info(f'Writing response data to {output_file_path}')
-    with open(output_file_path, 'w') as output_file:
+    logging.info('Writing response data to %s', output_file_path)
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
         output_file.write(response.text)
 
 
@@ -50,9 +50,13 @@ def request_retry(
     """
     count = 0
     response = None
-    valid_response_codes = [requests.codes.ok, requests.codes.created, requests.codes.no_content]
-    logging.debug(f'type_of_request: {request_method.name}')
-    logging.debug(f'url: {str(url)}')
+    valid_response_codes = [
+        requests.codes['ok'],
+        requests.codes['created'],
+        requests.codes['no_content']
+    ]
+    logging.debug('type_of_request: %s', request_method.name)
+    logging.debug('url: %s', str(url))
     while count < max_retry:
         try:
             response = make_request_based_on_input(request_method, url, request_settings)
@@ -60,26 +64,34 @@ def request_retry(
                 break
             raise requests.exceptions.RequestException
         except requests.exceptions.RequestException:
-            logging.debug(f'Could not make the {request_method.name} request')
+            logging.debug('Could not make the %s request', request_method.name)
             if response is not None:
-                logging.debug(f'Response status code: {str(response.status_code)}')
-                logging.debug(f'Response reason: {str(response.reason)}')
-                logging.debug(f'Response output: {str(response.text)}')
+                logging.debug('Response status code: %s', str(response.status_code))
+                logging.debug('Response reason: %s', str(response.reason))
+                logging.debug('Response output: %s', str(response.text))
 
-                if response.status_code == requests.codes.bad_request:
-                    raise RequestRetryException('Bad request detected') from requests.exceptions.RequestException
+                if response.status_code == requests.codes['bad_request']:
+                    raise RequestRetryException('Bad request detected') \
+                        from requests.exceptions.RequestException
         count += 1
         if count == max_retry:
-            raise RequestRetryException(f'Failed to execute {request_method.name} request after {max_retry} tries')
+            raise RequestRetryException(
+                f'Failed to execute {request_method.name} request after {max_retry} tries'
+            )
 
         sleep_time = 2 ** count
-        logging.warning(f'Failed to make {request_method.name} request. '
-                        f'Sleeping and then trying again in {sleep_time} seconds')
+        logging.warning('Failed to make %s request. '
+                        'Sleeping and then trying again in %s seconds',
+                        request_method.name,
+                        sleep_time)
         time.sleep(sleep_time)
     return response
 
 
-def make_request_based_on_input(request_method: HttpRequestMethod, url: str, request_settings: HttpRequestSettings):
+def make_request_based_on_input(
+        request_method: HttpRequestMethod,
+        url: str,
+        request_settings: HttpRequestSettings):
     """
     Makes a request based on the request type passed in
     :param request_method: Which REST request is being conducted
@@ -88,28 +100,46 @@ def make_request_based_on_input(request_method: HttpRequestMethod, url: str, req
     :return: response
     :rtype: requests.Response
     """
-    logging.debug(f'Trying to make {request_method.name} request')
+    logging.debug('Trying to make %s request', request_method.name)
     response = None
     try:
         if request_method == HttpRequestMethod.GET:
-            logging.debug(f'Doing a {request_method.name} request')
-            response = requests.get(url, proxies=request_settings.proxy, timeout=10, verify=request_settings.ssl,
+            logging.debug('Doing a %s request', request_method.name)
+            response = requests.get(url,
+                                    proxies=request_settings.proxy,
+                                    timeout=10,
+                                    verify=request_settings.ssl,
                                     auth=request_settings.auth)
         elif request_method == HttpRequestMethod.PATCH:
-            logging.debug(f'Doing a {request_method.name} request')
-            response = requests.patch(url, json=request_settings.body, timeout=20, proxies=request_settings.proxy,
-                                      verify=request_settings.ssl, auth=request_settings.auth)
+            logging.debug('Doing a %s request', request_method.name)
+            response = requests.patch(url,
+                                      json=request_settings.body,
+                                      timeout=20,
+                                      proxies=request_settings.proxy,
+                                      verify=request_settings.ssl,
+                                      auth=request_settings.auth)
         elif request_method == HttpRequestMethod.PUT:
-            logging.debug(f'Doing a {request_method.name} request')
-            response = requests.put(url, json=request_settings.body, timeout=5, proxies=request_settings.proxy,
-                                    verify=request_settings.ssl, auth=request_settings.auth)
+            logging.debug('Doing a %s request', request_method.name)
+            response = requests.put(url,
+                                    json=request_settings.body,
+                                    timeout=5,
+                                    proxies=request_settings.proxy,
+                                    verify=request_settings.ssl,
+                                    auth=request_settings.auth)
         elif request_method == HttpRequestMethod.POST:
-            logging.debug(f'Doing a {request_method.name} request')
-            response = requests.post(url, json=request_settings.body, timeout=20, proxies=request_settings.proxy,
-                                     verify=request_settings.ssl, auth=request_settings.auth)
+            logging.debug('Doing a %s request', request_method.name)
+            response = requests.post(url,
+                                     json=request_settings.body,
+                                     timeout=20,
+                                     proxies=request_settings.proxy,
+                                     verify=request_settings.ssl,
+                                     auth=request_settings.auth)
         elif request_method == HttpRequestMethod.DELETE:
-            logging.debug(f'Doing a {request_method.name} request')
-            response = requests.delete(url, timeout=10, proxies=request_settings.proxy, verify=request_settings.ssl)
+            logging.debug('Doing a %s request', request_method.name)
+            response = requests.delete(url,
+                                       timeout=10,
+                                       proxies=request_settings.proxy,
+                                       verify=request_settings.ssl)
     except (requests.exceptions.ProxyError, AssertionError):
-        logging.error(f'Could not make {request_method.name} request due to a Proxy Error')
+        logging.error('Could not make %s request due to a Proxy Error', request_method.name)
     return response

@@ -37,4 +37,5 @@ def set_logging_verbosity_level(logger, verbose):
 
 
 def logging_line_break():
+    """Logger formatting helper function which logs visual 'line-break'"""
     logging.info('============================================================')

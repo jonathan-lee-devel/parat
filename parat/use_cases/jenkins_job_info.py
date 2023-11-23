@@ -13,11 +13,12 @@ def get_jenkins_job_result_status(
         jenkins_request_settings,
         url_end,
         build_number)
-    if response_dict is None:
+    if response_dict is not None:
+        if response_dict['result'] == 'SUCCESS':
+            return JenkinsJobStatus.SUCCESS
+        if response_dict['result'] == 'UNSTABLE':
+            return JenkinsJobStatus.UNSTABLE
+    else:
         return JenkinsJobStatus.UNKNOWN
-    if response_dict['result'] == 'SUCCESS':
-        return JenkinsJobStatus.SUCCESS
-    if response_dict['result'] == 'UNSTABLE':
-        return JenkinsJobStatus.UNSTABLE
 
     return JenkinsJobStatus.FAILURE
