@@ -1,0 +1,24 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage("Docker Pull Image") {
+            steps {
+                script {
+                    sh 'docker pull --platform=linux/x86_64 jonathanleedev/parat:latest'
+                }
+            }
+        }
+
+        stage("Docker Run Help") {
+            steps {
+                script {
+                    sh 'docker run --rm jonathanleedev/parat:latest --help'
+                }
+            }
+        }
+
+    }
+}
