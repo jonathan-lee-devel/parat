@@ -1,4 +1,4 @@
-FROM python:3.11.4-alpine3.18
+FROM python:3.12-alpine3.18
 
 RUN pip install poetry==1.5.1
 
