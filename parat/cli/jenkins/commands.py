@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from parat.cli.options import (
     verbose_option, job_name_option, build_number_option, url_end_option,
     build_jobs_yaml_file_option, trim_url_end_option_util,
-    build_jobs_tracking_yaml_file_option
+    build_jobs_tracking_yaml_file_option, with_failure_option
 )
 from parat.constants import (
     BUILD, HOSTS, JENKINS_URL, JENKINS_USER,
@@ -38,12 +38,13 @@ def jenkins_commands() -> None:
 
 @jenkins_commands.command()
 @verbose_option
-def example_output(verbose: bool) -> None:
+@with_failure_option
+def example_output(verbose: bool, with_failure: bool) -> None:
     """Displays example output for Jenkins multi-job run"""
     load_dotenv()
     initialize_logging(verbose)
     logging_line_break()
-    logging.info('\n%s', yaml.dump({
+    logging.info('\n%s', yaml.dump(({
         'jobs': [
             {
                 'name': 'TestJob',
@@ -52,8 +53,19 @@ def example_output(verbose: bool) -> None:
                 'url': 'http://localhost:8080/job/TestJob/2'
             }
         ]
+    }) if not with_failure else {
+        'jobs': [
+            {
+                'name': 'TestJob',
+                'build': 2,
+                'status': 'FAILURE',
+                'url': 'http://localhost:8080/job/TestJob/2'
+            }
+        ]
     }))
     logging_line_break()
+    if with_failure:
+        sys.exit(1)
 
 
 @jenkins_commands.command()

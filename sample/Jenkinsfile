@@ -20,10 +20,18 @@ pipeline {
             }
         }
 
-        stage("Docker Run Example-Output") {
+        stage("Docker Run Example-Output Success") {
             steps {
                 script {
                     sh 'docker run --rm jonathanleedev/parat:latest example-output'
+                }
+            }
+        }
+
+        stage("Docker Run Example-Output Failure") {
+            steps {
+                script {
+                    sh 'docker run --rm jonathanleedev/parat:latest example-output --with-failure'
                 }
             }
         }
