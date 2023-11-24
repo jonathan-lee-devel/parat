@@ -4,7 +4,7 @@
 ## Usage
 ### With Docker
 ```shell
-docker run --rm parat --help
+docker run --rm --network host parat --help
 ```
 ### Without Docker
 Make sure to have Python Poetry installed by running the following command:
