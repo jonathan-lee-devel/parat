@@ -3,16 +3,8 @@ import logging
 import os
 from http import HTTPStatus
 
-from parat.constants import (
-    JENKINS_USER,
-    JENKINS_TOKEN,
-    SUCCESSFUL_JOBS,
-    FAILED_JOBS,
-    BUILDS,
-    URL,
-    JOBS,
-    END
-)
+from parat.constants.jenkins_env import JENKINS_USER, JENKINS_TOKEN
+from parat.constants.jenkins_yaml import JOBS, END, URL, BUILDS, SUCCESSFUL_JOBS, FAILED_JOBS
 from parat.utils.jenkins_rest_api.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins_rest_api.jenkins_utils import (
     get_jenkins_job_dict_url_end, start_jenkins_build_url_end

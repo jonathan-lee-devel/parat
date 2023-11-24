@@ -1,7 +1,7 @@
 """Module containing functions related to jenkins build job tracking"""
 import yaml
 
-from parat.constants import BUILD, HOSTS, JOBS, END
+from parat.constants.jenkins_yaml import BUILD, HOSTS, JOBS, END
 from parat.utils.jenkins_rest_api.validation_error import ValidationError
 
 
