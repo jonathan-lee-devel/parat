@@ -15,7 +15,9 @@ from parat.cli.jenkins.yaml.options import (
 from parat.constants.jenkins_yaml import BUILD, HOSTS, SUCCESSFUL_JOBS, FAILED_JOBS
 from parat.use_cases.jenkins_build_job_tracking import validate_jenkins_job_build_tracking_yaml
 from parat.use_cases.jenkins_builds import process_build_host
-from parat.utils.jenkins_rest_api.jenkins_poll_status import track_multiple_build_job_statuses
+from parat.utils.jenkins.jenkins_rest_api.jenkins_poll_status import (
+    track_multiple_build_job_statuses,
+)
 from parat.utils.logging_utils import initialize_logging, logging_line_break
 
 

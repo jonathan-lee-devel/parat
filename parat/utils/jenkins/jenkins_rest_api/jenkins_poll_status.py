@@ -7,8 +7,10 @@ from typing import Any
 from parat.constants.jenkins_env import JENKINS_USER, JENKINS_TOKEN
 from parat.constants.jenkins_yaml import BUILD, HOSTS, JOBS, URL, END
 from parat.enums.jenkins import JenkinsJobStatus
-from parat.utils.jenkins_rest_api.jekins_request_settings import JenkinsRequestSettings
-from parat.utils.jenkins_rest_api.jenkins_utils import get_jenkins_job_dict_url_end_build_number
+from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
+from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
+    get_jenkins_job_dict_url_end_build_number,
+)
 
 
 async def update_build_jobs_tracking_dict(

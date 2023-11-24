@@ -2,14 +2,9 @@
 from parat.enums.http_request_methods import HttpRequestMethod
 from parat.exceptions.request_retry_exception import RequestRetryException
 from parat.utils.http_request_settings import HttpRequestSettings
-from parat.utils.jenkins_rest_api.jekins_request_settings import JenkinsRequestSettings
+from parat.utils.jenkins.common_utils import validate_max_retry
+from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.request_retry import request_retry
-
-
-def validate_max_retry(max_retry: int):
-    """Validates max retry parameter"""
-    if max_retry < 1 or max_retry > 100_000:
-        raise ValueError('Max retry value invalid')
 
 
 def get_jenkins_console_output(
