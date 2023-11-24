@@ -28,10 +28,20 @@ pipeline {
             }
         }
 
-        stage("Docker Run Example-Output Failure") {
+        //stage("Docker Run Example-Output Failure") {
+        //    steps {
+        //        script {
+        //            sh 'docker run --rm jonathanleedev/parat:latest example-output --with-failure'
+        //        }
+        //    }
+        //}
+
+        stage("Docker Run wfapi Example Command") {
             steps {
                 script {
-                    sh 'docker run --rm jonathanleedev/parat:latest example-output --with-failure'
+                    withCredentials([usernamePassword(credentialsId: 'jenkins-local-self-access', usernameVariable: 'JENKINS_USER', passwordVariable: 'JENKINS_TOKEN')]) {
+                        sh 'docker run --rm -e JENKINS_USER=$JENKINS_USER -e JENKINS_TOKEN=$JENKINS_TOKEN jonathanleedev/parat:latest get-run-count --job-name User_Input_Job'
+                    }
                 }
             }
         }
