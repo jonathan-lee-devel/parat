@@ -62,6 +62,9 @@ def request_retry(
             response = make_request_based_on_input(request_method, url, request_settings)
             if response and response.status_code in valid_response_codes:
                 break
+            logging.debug(
+                'Raising RequestException as response status code is: %s',
+                response.status_code)
             raise requests.exceptions.RequestException
         except requests.exceptions.RequestException:
             logging.debug('Could not make the %s request', request_method.name)

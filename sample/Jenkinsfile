@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'jenkins-local-self-access', usernameVariable: 'JENKINS_USER', passwordVariable: 'JENKINS_TOKEN')]) {
-                        sh 'docker run --rm -e JENKINS_USER=$JENKINS_USER -e JENKINS_TOKEN=$JENKINS_TOKEN jonathanleedev/parat:latest get-run-count --job-name User_Input_Job'
+                        sh 'docker run -e JENKINS_URL="http://localhost:8080" -e JENKINS_USER=${JENKINS_USER} -e JENKINS_TOKEN=${JENKINS_TOKEN} --net=host --rm jonathanleedev/parat:latest get-run-count --job-name User_Input_Job'
                     }
                 }
             }
