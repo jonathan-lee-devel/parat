@@ -68,14 +68,13 @@ def request_retry(
             raise requests.exceptions.RequestException
         except requests.exceptions.RequestException:
             logging.debug('Could not make the %s request', request_method.name)
-            if response is not None:
-                logging.debug('Response status code: %s', str(response.status_code))
-                logging.debug('Response reason: %s', str(response.reason))
-                logging.debug('Response output: %s', str(response.text))
+            logging.debug('Response status code: %s', str(response.status_code))
+            logging.debug('Response reason: %s', str(response.reason))
+            logging.debug('Response output: %s', str(response.text))
 
-                if response.status_code == requests.codes['bad_request']:
-                    raise RequestRetryException('Bad request detected') \
-                        from requests.exceptions.RequestException
+            if response.status_code == requests.codes['bad_request']:
+                raise RequestRetryException('Bad request detected') \
+                    from requests.exceptions.RequestException
         count += 1
         if count == max_retry:
             raise RequestRetryException(
