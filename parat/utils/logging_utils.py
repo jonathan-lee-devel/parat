@@ -3,7 +3,10 @@ Utilities file to store logging functions
 """
 import logging
 
+from typeguard import typechecked
 
+
+@typechecked
 def initialize_logging(verbose: bool = False):
     """
     Get the Root Logger and Set the Handlers and the Formatters
@@ -22,6 +25,7 @@ def initialize_logging(verbose: bool = False):
     set_logging_verbosity_level(logger, verbose)
 
 
+@typechecked
 def set_logging_verbosity_level(logger: logging.Logger, verbose: bool):
     """
     Sets the verbosity level of the specified logger handler depending on the verbose

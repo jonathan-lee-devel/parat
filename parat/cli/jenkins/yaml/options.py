@@ -1,7 +1,9 @@
 """Jenkins YAML parsing command-line options"""
 import click
+from typeguard import typechecked
 
 
+@typechecked
 def build_jobs_yaml_file_option(func):
     """Build jobs YAML file"""
     return click.option('-bjy',
@@ -13,6 +15,7 @@ def build_jobs_yaml_file_option(func):
                         )(func)
 
 
+@typechecked
 def build_jobs_tracking_yaml_file_option(func):
     """Build jobs tracking YAML file"""
     return click.option('-bjty',

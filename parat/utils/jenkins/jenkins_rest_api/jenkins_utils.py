@@ -1,5 +1,6 @@
 """Jenkins utilities module"""
 from requests import Response
+from typeguard import typechecked
 
 from parat.enums.http_request_methods import HttpRequestMethod
 from parat.exceptions.request_retry_exception import RequestRetryException
@@ -9,6 +10,7 @@ from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.request_retry import request_retry
 
 
+@typechecked
 def get_jenkins_console_output(
         jenkins_request_settings: JenkinsRequestSettings,
         job_name: str,
@@ -22,6 +24,7 @@ def get_jenkins_console_output(
                          HttpRequestSettings(auth=jenkins_request_settings.auth)).text
 
 
+@typechecked
 def get_jenkins_console_output_url_end(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str) -> str:
@@ -35,6 +38,7 @@ def get_jenkins_console_output_url_end(
                          ).text
 
 
+@typechecked
 def get_jenkins_job_dict(
         jenkins_request_settings: JenkinsRequestSettings,
         job_name: str,
@@ -47,10 +51,11 @@ def get_jenkins_job_dict(
                          HttpRequestSettings(auth=jenkins_request_settings.auth))
 
 
+@typechecked
 def get_jenkins_job_dict_url_end(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,
-) -> dict:
+) -> dict or None:
     """Gets Jenkins job JSON data for a specific job's build based on URL ending"""
     validate_max_retry(jenkins_request_settings.max_retry)
     try:
@@ -63,10 +68,11 @@ def get_jenkins_job_dict_url_end(
         return None
 
 
+@typechecked
 def get_jenkins_job_dict_url_end_build_number(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,
-        build_number: int) -> dict:
+        build_number: int) -> dict or None:
     """Gets Jenkins job JSON data based on URL end and build number"""
     validate_max_retry(jenkins_request_settings.max_retry)
     try:
@@ -80,6 +86,7 @@ def get_jenkins_job_dict_url_end_build_number(
         return None
 
 
+@typechecked
 def start_jenkins_build(
         jenkins_request_settings: JenkinsRequestSettings,
         job_name: str,
@@ -92,6 +99,7 @@ def start_jenkins_build(
                          HttpRequestSettings(auth=jenkins_request_settings.auth))
 
 
+@typechecked
 def start_jenkins_build_url_end(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,

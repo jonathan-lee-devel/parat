@@ -6,6 +6,7 @@ import sys
 import click
 import yaml
 from dotenv import load_dotenv
+from typeguard import typechecked
 
 from parat.cli.common.options import verbose_option
 from parat.cli.jenkins.yaml.options import (
@@ -25,10 +26,10 @@ from parat.utils.logging_utils import initialize_logging, logging_line_break
 def jenkins_yaml_commands() -> None:
     """Entry point"""
 
-
 @jenkins_yaml_commands.command()
 @verbose_option
 @build_jobs_yaml_file_option
+@typechecked
 def start_build_jobs_yaml(verbose: bool, build_jobs_yaml: str) -> None:
     """Kicks off Jenkins jobs based on YAML input"""
     load_dotenv()
@@ -68,6 +69,7 @@ def start_build_jobs_yaml(verbose: bool, build_jobs_yaml: str) -> None:
 @jenkins_yaml_commands.command()
 @verbose_option
 @build_jobs_tracking_yaml_file_option
+@typechecked
 def track_build_jobs_status(verbose: bool, build_jobs_tracking_yaml: str):
     """Tracks build job status"""
     load_dotenv()

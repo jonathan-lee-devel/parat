@@ -1,10 +1,12 @@
 """Module containing functions related to jenkins build job tracking"""
 import yaml
+from typeguard import typechecked
 
 from parat.constants.jenkins_yaml import BUILD, HOSTS, JOBS, END
 from parat.utils.jenkins.jenkins_rest_api.validation_error import ValidationError
 
 
+@typechecked
 def validate_jenkins_job_build_tracking_yaml(build_jobs_tracking_yaml_file_path: str) -> list:
     """Validates jenkins job build tracking YAML input data"""
     validation_errors = []

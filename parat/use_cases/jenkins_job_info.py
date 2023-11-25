@@ -1,4 +1,6 @@
 """Jenkins Job Info Module"""
+from typeguard import typechecked
+
 from parat.enums.jenkins import JenkinsJobStatus
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
@@ -6,6 +8,7 @@ from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
 )
 
 
+@typechecked
 def get_jenkins_job_result_status(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,

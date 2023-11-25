@@ -4,6 +4,8 @@ import logging
 import os
 from typing import Any
 
+from typeguard import typechecked
+
 from parat.constants.jenkins_env import JENKINS_USER, JENKINS_TOKEN
 from parat.constants.jenkins_yaml import BUILD, HOSTS, JOBS, URL, END
 from parat.enums.jenkins import JenkinsJobStatus
@@ -13,6 +15,7 @@ from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
 )
 
 
+@typechecked
 async def update_build_jobs_tracking_dict(
         build_jobs_statuses: tuple[Any],
         build_jobs_tracking_dict: dict):
@@ -26,6 +29,7 @@ async def update_build_jobs_tracking_dict(
                     job['status'] = build_job_status['status'].name
 
 
+@typechecked
 async def track_multiple_build_job_statuses(build_jobs_tracking_dict: dict):
     """Tracks multiple build job statuses"""
     url_combos: list[dict] = []
@@ -49,6 +53,7 @@ async def track_multiple_build_job_statuses(build_jobs_tracking_dict: dict):
     await update_build_jobs_tracking_dict(statuses, build_jobs_tracking_dict)
 
 
+@typechecked
 async def poll_jenkins_job_for_desirable_status(jenkins_request_settings: JenkinsRequestSettings,
                                                 url_end: str,
                                                 build_number: int) -> dict:

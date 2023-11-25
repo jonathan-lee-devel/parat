@@ -6,6 +6,7 @@ import sys
 import click
 import yaml
 from dotenv import load_dotenv
+from typeguard import typechecked
 
 from parat.cli.common.options import verbose_option
 from parat.cli.jenkins.basic.options import job_name_option
@@ -25,6 +26,7 @@ def jenkins_example_commands() -> None:
 @jenkins_example_commands.command()
 @verbose_option
 @with_failure_option
+@typechecked
 def example_output(verbose: bool, with_failure: bool) -> None:
     """Displays example output for Jenkins multi-job run"""
     load_dotenv()
@@ -57,6 +59,7 @@ def example_output(verbose: bool, with_failure: bool) -> None:
 @jenkins_example_commands.command()
 @verbose_option
 @job_name_option
+@typechecked
 def get_run_count(verbose: bool, job_name: str) -> None:
     """Gets the run count for a specific job"""
     load_dotenv()
@@ -75,6 +78,7 @@ def get_run_count(verbose: bool, job_name: str) -> None:
 @jenkins_example_commands.command()
 @verbose_option
 @job_name_option
+@typechecked
 def get_job_runs_content(verbose: bool, job_name: str) -> None:
     """Gets the run data for a specific job"""
     load_dotenv()

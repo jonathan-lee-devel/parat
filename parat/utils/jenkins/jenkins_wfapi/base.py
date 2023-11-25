@@ -1,9 +1,12 @@
 """wfapi base endpoint utilities module"""
+from typeguard import typechecked
+
 from parat.utils.http_request_settings import HttpRequestSettings
 from parat.utils.jenkins.common_utils import get_json_response_dict
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 
 
+@typechecked
 def get_job_name_and_run_count(
         request_settings: JenkinsRequestSettings,
         job_name: str,

@@ -7,6 +7,7 @@ import logging
 import time
 import requests
 import urllib3
+from typeguard import typechecked
 
 from parat.enums.http_request_methods import HttpRequestMethod
 from parat.exceptions.request_retry_exception import RequestRetryException
@@ -15,6 +16,7 @@ from parat.utils.http_request_settings import HttpRequestSettings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
+@typechecked
 def request_retry_download_file(
         url: str,
         max_retry: int,
@@ -33,6 +35,7 @@ def request_retry_download_file(
         output_file.write(response.text)
 
 
+@typechecked
 def request_retry(
         request_method: HttpRequestMethod,
         url: str,
@@ -89,6 +92,7 @@ def request_retry(
     return response
 
 
+@typechecked
 def make_request_based_on_input(
         request_method: HttpRequestMethod,
         url: str,

@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 poetry run pylint parat
-poetry run pytest
+poetry run pytest --typeguard-packages=parat

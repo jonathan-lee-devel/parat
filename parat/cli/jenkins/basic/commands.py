@@ -5,6 +5,7 @@ from http import HTTPStatus
 
 import click
 from dotenv import load_dotenv
+from typeguard import typechecked
 
 from parat.cli.common.options import verbose_option
 from parat.cli.jenkins.basic.options import (
@@ -30,6 +31,7 @@ def jenkins_basic_commands() -> None:
 @jenkins_basic_commands.command()
 @verbose_option
 @job_name_option
+@typechecked
 def start_build(verbose: bool, job_name: str) -> None:
     """Kicks off a Jenkins job build based on job name"""
     load_dotenv()
@@ -50,6 +52,7 @@ def start_build(verbose: bool, job_name: str) -> None:
 @jenkins_basic_commands.command()
 @verbose_option
 @url_end_option
+@typechecked
 def start_build_url(verbose: bool, url_end: str) -> None:
     """Starts Jenkins job based on URL ending"""
     load_dotenv()
@@ -72,6 +75,7 @@ def start_build_url(verbose: bool, url_end: str) -> None:
 @verbose_option
 @job_name_option
 @build_number_option
+@typechecked
 def get_console_output(verbose: bool, job_name: str, build_number: int) -> None:
     """Gets console output for specific Jenkins job build"""
     load_dotenv()
@@ -92,6 +96,7 @@ def get_console_output(verbose: bool, job_name: str, build_number: int) -> None:
 @verbose_option
 @job_name_option
 @build_number_option
+@typechecked
 def get_jenkins_json(verbose: bool, job_name: str, build_number: int) -> None:
     """Gets Jenkins job build JSON data from REST API"""
     load_dotenv()
@@ -112,6 +117,7 @@ def get_jenkins_json(verbose: bool, job_name: str, build_number: int) -> None:
 @verbose_option
 @url_end_option
 @build_number_option
+@typechecked
 def get_jenkins_job_status(verbose: bool, url_end: str, build_number: int) -> None:
     """Gets jenkins job status"""
     load_dotenv()
