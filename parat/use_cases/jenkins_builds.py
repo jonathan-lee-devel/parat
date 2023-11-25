@@ -9,7 +9,7 @@ from parat.constants.jenkins_env import JENKINS_USER, JENKINS_TOKEN
 from parat.constants.jenkins_yaml import JOBS, END, URL, BUILDS, SUCCESSFUL_JOBS, FAILED_JOBS
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
-    get_jenkins_job_dict_url_end, start_jenkins_build_url_end
+    get_jenkins_build_dict_url_end, start_jenkins_build_url_end
 )
 
 @typechecked
@@ -19,7 +19,7 @@ def process_build_host(build_host: dict) -> dict:
     failed_jobs = []
     for build_job_index in range(len(build_host[JOBS])):
         build_job_url_end = build_host[JOBS][build_job_index][END]
-        jenkins_job_pre_run_dict = get_jenkins_job_dict_url_end(
+        jenkins_job_pre_run_dict = get_jenkins_build_dict_url_end(
             JenkinsRequestSettings(
                 build_host[URL],
                 (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),

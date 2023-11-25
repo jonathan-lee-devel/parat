@@ -14,11 +14,11 @@ def validate_max_retry(max_retry: int) -> None:
 
 
 @typechecked
-def get_json_response_dict(
+def get_json_response(
         url: str,
         max_retry: int,
         http_request_settings: HttpRequestSettings,
-) -> list or dict:
+) -> dict | list:
     """Common util function which gets JSON response as dict"""
     validate_max_retry(max_retry)
     return (request_retry(HttpRequestMethod.GET,

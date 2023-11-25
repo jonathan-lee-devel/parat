@@ -16,7 +16,7 @@ from parat.constants.jenkins_env import JENKINS_URL, JENKINS_USER, JENKINS_TOKEN
 from parat.use_cases.jenkins_job_info import get_jenkins_job_result_status
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
-    get_jenkins_console_output, get_jenkins_job_dict,
+    get_jenkins_build_console_output, get_jenkins_build_dict,
     start_jenkins_build,
     start_jenkins_build_url_end
 )
@@ -83,7 +83,7 @@ def get_console_output(verbose: bool, job_name: str, build_number: int) -> None:
     logging.info('Getting console output for (%s) build number #%s...',
                  job_name,
                  build_number)
-    console_output = get_jenkins_console_output(
+    console_output = get_jenkins_build_console_output(
         JenkinsRequestSettings(
             os.getenv(JENKINS_URL),
             (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
@@ -97,14 +97,14 @@ def get_console_output(verbose: bool, job_name: str, build_number: int) -> None:
 @job_name_option
 @build_number_option
 @typechecked
-def get_jenkins_json(verbose: bool, job_name: str, build_number: int) -> None:
+def get_jenkins_build_json(verbose: bool, job_name: str, build_number: int) -> None:
     """Gets Jenkins job build JSON data from REST API"""
     load_dotenv()
     initialize_logging(verbose)
     logging.info('Getting API JSON for (%s) build number #%s...',
                  job_name,
                  build_number)
-    jenkins_dict = get_jenkins_job_dict(
+    jenkins_dict = get_jenkins_build_dict(
         JenkinsRequestSettings(
             os.getenv(JENKINS_URL),
             (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
@@ -119,7 +119,7 @@ def get_jenkins_json(verbose: bool, job_name: str, build_number: int) -> None:
 @build_number_option
 @typechecked
 def get_jenkins_job_status(verbose: bool, url_end: str, build_number: int) -> None:
-    """Gets jenkins job status"""
+    """Gets jenkins_responses job status"""
     load_dotenv()
     initialize_logging(verbose)
     url_end = trim_url_end_option_util(url_end)

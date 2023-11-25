@@ -4,7 +4,7 @@ from typeguard import typechecked
 from parat.enums.jenkins import JenkinsJobStatus
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
-    get_jenkins_job_dict_url_end_build_number,
+    get_jenkins_build_dict_url_end_build_number,
 )
 
 
@@ -14,7 +14,7 @@ def get_jenkins_job_result_status(
         url_end: str,
         build_number: int) -> JenkinsJobStatus:
     """Gets the result status of the Jenkins job run"""
-    response_dict = get_jenkins_job_dict_url_end_build_number(
+    response_dict = get_jenkins_build_dict_url_end_build_number(
         jenkins_request_settings,
         url_end,
         build_number)

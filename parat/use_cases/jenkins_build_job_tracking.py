@@ -1,4 +1,4 @@
-"""Module containing functions related to jenkins build job tracking"""
+"""Module containing functions related to jenkins_responses build job tracking"""
 import yaml
 from typeguard import typechecked
 
@@ -8,7 +8,7 @@ from parat.utils.jenkins.jenkins_rest_api.validation_error import ValidationErro
 
 @typechecked
 def validate_jenkins_job_build_tracking_yaml(build_jobs_tracking_yaml_file_path: str) -> list:
-    """Validates jenkins job build tracking YAML input data"""
+    """Validates jenkins_responses job build tracking YAML input data"""
     validation_errors = []
     with open(build_jobs_tracking_yaml_file_path, 'r', encoding='utf-8') as yaml_file_contents:
         build_jobs_tracking_dict = yaml.safe_load(yaml_file_contents)

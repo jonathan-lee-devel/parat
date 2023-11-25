@@ -1,17 +1,19 @@
 """Jenkins utilities module"""
+
 from requests import Response
-from typeguard import typechecked
+from typeguard import typechecked, check_type
 
 from parat.enums.http_request_methods import HttpRequestMethod
 from parat.exceptions.request_retry_exception import RequestRetryException
+from parat.types.jenkins_responses.rest_api.build_api_json import BuildApiJsonResponse
 from parat.utils.http_request_settings import HttpRequestSettings
-from parat.utils.jenkins.common_utils import validate_max_retry, get_json_response_dict
+from parat.utils.jenkins.common_utils import validate_max_retry, get_json_response
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.request_retry import request_retry
 
 
 @typechecked
-def get_jenkins_console_output(
+def get_jenkins_build_console_output(
         jenkins_request_settings: JenkinsRequestSettings,
         job_name: str,
         build_number: int) -> str:
@@ -25,7 +27,7 @@ def get_jenkins_console_output(
 
 
 @typechecked
-def get_jenkins_console_output_url_end(
+def get_jenkins_build_console_output_url_end(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str) -> str:
     """Gets console output for a specific job's build based on URL ending"""
@@ -39,27 +41,30 @@ def get_jenkins_console_output_url_end(
 
 
 @typechecked
-def get_jenkins_job_dict(
+def get_jenkins_build_dict(
         jenkins_request_settings: JenkinsRequestSettings,
         job_name: str,
-        build_number: int):
+        build_number: int
+) -> BuildApiJsonResponse:
     """Gets Jenkins job JSON data for a specific job's build"""
     validate_max_retry(jenkins_request_settings.max_retry)
-    return get_json_response_dict(
+    raw_response: dict = get_json_response(
                          f'{jenkins_request_settings.url}/job/{job_name}/{build_number}/api/json',
                          jenkins_request_settings.max_retry,
                          HttpRequestSettings(auth=jenkins_request_settings.auth))
+    typed_response: BuildApiJsonResponse = check_type(raw_response, BuildApiJsonResponse)
+    return typed_response
 
 
 @typechecked
-def get_jenkins_job_dict_url_end(
+def get_jenkins_build_dict_url_end(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,
-) -> dict or None:
+) -> dict | None:
     """Gets Jenkins job JSON data for a specific job's build based on URL ending"""
     validate_max_retry(jenkins_request_settings.max_retry)
     try:
-        response_dict = get_json_response_dict(
+        response_dict = get_json_response(
                                        f'{jenkins_request_settings.url}/{url_end}/api/json',
                                        jenkins_request_settings.max_retry,
                                        HttpRequestSettings(auth=jenkins_request_settings.auth))
@@ -69,14 +74,14 @@ def get_jenkins_job_dict_url_end(
 
 
 @typechecked
-def get_jenkins_job_dict_url_end_build_number(
+def get_jenkins_build_dict_url_end_build_number(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,
         build_number: int) -> dict or None:
     """Gets Jenkins job JSON data based on URL end and build number"""
     validate_max_retry(jenkins_request_settings.max_retry)
     try:
-        response_dict = get_json_response_dict(
+        response_dict = get_json_response(
                                        f'{jenkins_request_settings.url}/{url_end}/{build_number}'
                                        '/api/json',
                                        jenkins_request_settings.max_retry,
