@@ -1,8 +1,10 @@
 """Jenkins utilities module"""
+from requests import Response
+
 from parat.enums.http_request_methods import HttpRequestMethod
 from parat.exceptions.request_retry_exception import RequestRetryException
 from parat.utils.http_request_settings import HttpRequestSettings
-from parat.utils.jenkins.common_utils import validate_max_retry
+from parat.utils.jenkins.common_utils import validate_max_retry, get_json_response_dict
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.request_retry import request_retry
 
@@ -10,7 +12,7 @@ from parat.utils.request_retry import request_retry
 def get_jenkins_console_output(
         jenkins_request_settings: JenkinsRequestSettings,
         job_name: str,
-        build_number: int):
+        build_number: int) -> str:
     """Jenkins utility function which gets console output for a specific job's build"""
     validate_max_retry(jenkins_request_settings.max_retry)
     return request_retry(HttpRequestMethod.GET,
@@ -22,7 +24,7 @@ def get_jenkins_console_output(
 
 def get_jenkins_console_output_url_end(
         jenkins_request_settings: JenkinsRequestSettings,
-        url_end: str):
+        url_end: str) -> str:
     """Gets console output for a specific job's build based on URL ending"""
     validate_max_retry(jenkins_request_settings.max_retry)
     return request_retry(HttpRequestMethod.GET,
@@ -39,22 +41,23 @@ def get_jenkins_job_dict(
         build_number: int):
     """Gets Jenkins job JSON data for a specific job's build"""
     validate_max_retry(jenkins_request_settings.max_retry)
-    return request_retry(HttpRequestMethod.GET,
+    return get_json_response_dict(
                          f'{jenkins_request_settings.url}/job/{job_name}/{build_number}/api/json',
                          jenkins_request_settings.max_retry,
-                         HttpRequestSettings(auth=jenkins_request_settings.auth)
-                         ).json()
+                         HttpRequestSettings(auth=jenkins_request_settings.auth))
 
 
-def get_jenkins_job_dict_url_end(jenkins_request_settings: JenkinsRequestSettings, url_end: str):
+def get_jenkins_job_dict_url_end(
+        jenkins_request_settings: JenkinsRequestSettings,
+        url_end: str,
+) -> dict:
     """Gets Jenkins job JSON data for a specific job's build based on URL ending"""
     validate_max_retry(jenkins_request_settings.max_retry)
     try:
-        response_dict = (request_retry(HttpRequestMethod.GET,
+        response_dict = get_json_response_dict(
                                        f'{jenkins_request_settings.url}/{url_end}/api/json',
                                        jenkins_request_settings.max_retry,
                                        HttpRequestSettings(auth=jenkins_request_settings.auth))
-                         .json())
         return response_dict
     except RequestRetryException:
         return None
@@ -63,22 +66,24 @@ def get_jenkins_job_dict_url_end(jenkins_request_settings: JenkinsRequestSetting
 def get_jenkins_job_dict_url_end_build_number(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,
-        build_number: int):
+        build_number: int) -> dict:
     """Gets Jenkins job JSON data based on URL end and build number"""
     validate_max_retry(jenkins_request_settings.max_retry)
     try:
-        response_dict = (request_retry(HttpRequestMethod.GET,
+        response_dict = get_json_response_dict(
                                        f'{jenkins_request_settings.url}/{url_end}/{build_number}'
                                        '/api/json',
                                        jenkins_request_settings.max_retry,
                                        HttpRequestSettings(auth=jenkins_request_settings.auth))
-                         .json())
         return response_dict
     except RequestRetryException:
         return None
 
 
-def start_jenkins_build(jenkins_request_settings: JenkinsRequestSettings, job_name: str):
+def start_jenkins_build(
+        jenkins_request_settings: JenkinsRequestSettings,
+        job_name: str,
+) -> Response:
     """Kicks off a build for specified Jenkins job based on job name"""
     validate_max_retry(jenkins_request_settings.max_retry)
     return request_retry(HttpRequestMethod.POST,
@@ -87,7 +92,10 @@ def start_jenkins_build(jenkins_request_settings: JenkinsRequestSettings, job_na
                          HttpRequestSettings(auth=jenkins_request_settings.auth))
 
 
-def start_jenkins_build_url_end(jenkins_request_settings: JenkinsRequestSettings, url_end: str):
+def start_jenkins_build_url_end(
+        jenkins_request_settings: JenkinsRequestSettings,
+        url_end: str,
+) -> int:
     """Kicks off a build for a specified Jenkins job based on URL ending"""
     validate_max_retry(jenkins_request_settings.max_retry)
     try:

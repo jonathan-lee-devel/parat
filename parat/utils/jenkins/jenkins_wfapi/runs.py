@@ -1,7 +1,7 @@
 """wfapi runs endpoints utilities module"""
 from parat.utils.http_request_settings import HttpRequestSettings
+from parat.utils.jenkins.common_utils import get_json_response_dict
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
-from parat.utils.jenkins.jenkins_wfapi.base import get_json_response_dict
 
 
 def get_job_runs_response_content(
