@@ -6,6 +6,9 @@ RUN pip install poetry==1.5.1
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
+# Prevents run-time type-checking causing issues in production
+ENV PYTHONOPTIMIZE=true
+
 # Store all of the packages under the /usr/src/app/ directory
 RUN mkdir -p /usr/src/app/
 WORKDIR /usr/src/app
