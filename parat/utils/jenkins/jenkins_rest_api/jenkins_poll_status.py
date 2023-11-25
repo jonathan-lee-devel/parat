@@ -87,6 +87,7 @@ async def poll_jenkins_job_for_desirable_status(jenkins_request_settings: Jenkin
                 (none_responses_count + 1))
             await asyncio.sleep(60)
         elif response_dict['result'] == 'SUCCESS':
+            # pylint: disable=redefined-variable-type
             jenkins_job_status = JenkinsJobStatus.SUCCESS
             logging.debug('Result of %s #%s is'
                           '%s, stopping polling!',

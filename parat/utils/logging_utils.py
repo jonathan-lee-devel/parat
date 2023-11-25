@@ -4,7 +4,7 @@ Utilities file to store logging functions
 import logging
 
 
-def initialize_logging(verbose=False):
+def initialize_logging(verbose: bool = False):
     """
     Get the Root Logger and Set the Handlers and the Formatters
     :param verbose: Flag to set logging level to debug
@@ -22,7 +22,7 @@ def initialize_logging(verbose=False):
     set_logging_verbosity_level(logger, verbose)
 
 
-def set_logging_verbosity_level(logger, verbose):
+def set_logging_verbosity_level(logger: logging.Logger, verbose: bool):
     """
     Sets the verbosity level of the specified logger handler depending on the verbose
     option passed in

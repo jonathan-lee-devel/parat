@@ -19,14 +19,13 @@ def request_retry_download_file(
         url: str,
         max_retry: int,
         request_settings: HttpRequestSettings,
-        output_file_path: str):
+        output_file_path: str) -> None:
     """
     Function which utilizes local request retry function to download file at specified URL
     :param url: of the file to download
     :param max_retry: Amount of times to retry the request
     :param request_settings: Settings for the request namely body, proxy, and SSL
     :param output_file_path: File path for the response body to be written to
-    :return:
     """
     response = request_retry(HttpRequestMethod.GET, url, max_retry, request_settings)
     logging.info('Writing response data to %s', output_file_path)
