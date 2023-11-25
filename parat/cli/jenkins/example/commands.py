@@ -1,4 +1,5 @@
 """Commands to demonstrate CLI capabilities"""
+import json
 import logging
 import os
 import sys
@@ -12,6 +13,7 @@ from parat.cli.jenkins.example.options import with_failure_option
 from parat.constants.jenkins_env import JENKINS_URL, JENKINS_USER, JENKINS_TOKEN
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_wfapi.base import get_job_name_and_run_count
+from parat.utils.jenkins.jenkins_wfapi.runs import get_job_runs_response_content
 from parat.utils.logging_utils import initialize_logging, logging_line_break
 
 
@@ -60,11 +62,29 @@ def get_run_count(verbose: bool, job_name: str) -> None:
     load_dotenv()
     initialize_logging(verbose)
     logging_line_break()
-    logging.info('%s', get_job_name_and_run_count(
+    logging.info('%s', json.dumps(get_job_name_and_run_count(
         JenkinsRequestSettings(
             os.getenv(JENKINS_URL),
             (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
             1,
         ),
         job_name,
-    ))
+    ), indent=2))
+
+
+@jenkins_example_commands.command()
+@verbose_option
+@job_name_option
+def get_job_runs_content(verbose: bool, job_name: str) -> None:
+    """Gets the run data for a specific job"""
+    load_dotenv()
+    initialize_logging(verbose)
+    logging_line_break()
+    logging.info('%s', json.dumps(get_job_runs_response_content(
+        JenkinsRequestSettings(
+            os.getenv(JENKINS_URL),
+            (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
+            1,
+        ),
+        job_name,
+    ), indent=2))
