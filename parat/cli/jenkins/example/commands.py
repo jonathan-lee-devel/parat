@@ -3,6 +3,8 @@ import json
 import logging
 import os
 import sys
+from abc import ABC
+
 import click
 import yaml
 from dotenv import load_dotenv
@@ -23,72 +25,74 @@ def jenkins_example_commands() -> None:
     """Entry point"""
 
 
-@jenkins_example_commands.command()
-@verbose_option
-@with_failure_option
-@typechecked
-def example_output(verbose: bool, with_failure: bool) -> None:
-    """Displays example output for Jenkins multi-job run"""
-    load_dotenv()
-    initialize_logging(verbose)
-    logging_line_break()
-    logging.info('\n%s', yaml.dump(({
-        'jobs': [
-            {
-                'name': 'TestJob',
-                'build': 2,
-                'status': 'SUCCESS',
-                'url': 'http://localhost:8080/job/TestJob/2'
-            }
-        ]
-    }) if not with_failure else {
-        'jobs': [
-            {
-                'name': 'TestJob',
-                'build': 2,
-                'status': 'FAILURE',
-                'url': 'http://localhost:8080/job/TestJob/2'
-            }
-        ]
-    }))
-    logging_line_break()
-    if with_failure:
-        sys.exit(1)
+class ExampleCommands(ABC):
+    @jenkins_example_commands.command()
+    @verbose_option
+    @with_failure_option
+    @staticmethod
+    @typechecked
+    def example_output(verbose: bool, with_failure: bool) -> None:
+        """Displays example output for Jenkins multi-job run"""
+        load_dotenv()
+        initialize_logging(verbose)
+        logging_line_break()
+        logging.info('\n%s', yaml.dump(({
+            'jobs': [
+                {
+                    'name': 'TestJob',
+                    'build': 2,
+                    'status': 'SUCCESS',
+                    'url': 'http://localhost:8080/job/TestJob/2'
+                }
+            ]
+        }) if not with_failure else {
+            'jobs': [
+                {
+                    'name': 'TestJob',
+                    'build': 2,
+                    'status': 'FAILURE',
+                    'url': 'http://localhost:8080/job/TestJob/2'
+                }
+            ]
+        }))
+        logging_line_break()
+        if with_failure:
+            sys.exit(1)
 
+    @jenkins_example_commands.command()
+    @verbose_option
+    @job_name_option
+    @staticmethod
+    @typechecked
+    def get_run_count(verbose: bool, job_name: str) -> None:
+        """Gets the run count for a specific job"""
+        load_dotenv()
+        initialize_logging(verbose)
+        logging_line_break()
+        logging.info('%s', json.dumps(get_job_name_and_run_count(
+            JenkinsRequestSettings(
+                os.getenv(JENKINS_URL),
+                (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
+                1,
+            ),
+            job_name,
+        ), indent=2))
 
-@jenkins_example_commands.command()
-@verbose_option
-@job_name_option
-@typechecked
-def get_run_count(verbose: bool, job_name: str) -> None:
-    """Gets the run count for a specific job"""
-    load_dotenv()
-    initialize_logging(verbose)
-    logging_line_break()
-    logging.info('%s', json.dumps(get_job_name_and_run_count(
-        JenkinsRequestSettings(
-            os.getenv(JENKINS_URL),
-            (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
-            1,
-        ),
-        job_name,
-    ), indent=2))
-
-
-@jenkins_example_commands.command()
-@verbose_option
-@job_name_option
-@typechecked
-def get_job_runs_content(verbose: bool, job_name: str) -> None:
-    """Gets the run data for a specific job"""
-    load_dotenv()
-    initialize_logging(verbose)
-    logging_line_break()
-    logging.info('%s', json.dumps(get_job_runs_response_content(
-        JenkinsRequestSettings(
-            os.getenv(JENKINS_URL),
-            (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
-            1,
-        ),
-        job_name,
-    ), indent=2))
+    @jenkins_example_commands.command()
+    @verbose_option
+    @job_name_option
+    @staticmethod
+    @typechecked
+    def get_job_runs_content(verbose: bool, job_name: str) -> None:
+        """Gets the run data for a specific job"""
+        load_dotenv()
+        initialize_logging(verbose)
+        logging_line_break()
+        logging.info('%s', json.dumps(get_job_runs_response_content(
+            JenkinsRequestSettings(
+                os.getenv(JENKINS_URL),
+                (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
+                1,
+            ),
+            job_name,
+        ), indent=2))
