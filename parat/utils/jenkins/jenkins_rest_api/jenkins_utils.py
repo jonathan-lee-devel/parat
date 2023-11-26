@@ -1,4 +1,5 @@
 """Jenkins utilities module"""
+from collections.abc import Callable
 
 from requests import Response
 from typeguard import typechecked, check_type
@@ -7,7 +8,7 @@ from parat.enums.http_request_methods import HttpRequestMethod
 from parat.exceptions.request_retry_exception import RequestRetryException
 from parat.types.jenkins_responses.rest_api.build_api_json import BuildApiJsonResponse
 from parat.utils.http_request_settings import HttpRequestSettings
-from parat.utils.jenkins.common_utils import validate_max_retry, get_json_response
+from parat.utils.jenkins.common_utils import validate_max_retry
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.request_retry import request_retry
 
@@ -44,7 +45,8 @@ def get_jenkins_build_console_output_url_end(
 def get_jenkins_build_dict(
         jenkins_request_settings: JenkinsRequestSettings,
         job_name: str,
-        build_number: int
+        build_number: int,
+        get_json_response: Callable[[str, int, HttpRequestSettings], dict | list],
 ) -> BuildApiJsonResponse:
     """Gets Jenkins job JSON data for a specific job's build"""
     validate_max_retry(jenkins_request_settings.max_retry)
@@ -60,6 +62,7 @@ def get_jenkins_build_dict(
 def get_jenkins_build_dict_url_end(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,
+        get_json_response: Callable[[str, int, HttpRequestSettings], dict | list],
 ) -> dict | None:
     """Gets Jenkins job JSON data for a specific job's build based on URL ending"""
     validate_max_retry(jenkins_request_settings.max_retry)
@@ -77,7 +80,9 @@ def get_jenkins_build_dict_url_end(
 def get_jenkins_build_dict_url_end_build_number(
         jenkins_request_settings: JenkinsRequestSettings,
         url_end: str,
-        build_number: int) -> dict or None:
+        build_number: int,
+        get_json_response: Callable[[str, int, HttpRequestSettings], dict | list],
+) -> dict | None:
     """Gets Jenkins job JSON data based on URL end and build number"""
     validate_max_retry(jenkins_request_settings.max_retry)
     try:

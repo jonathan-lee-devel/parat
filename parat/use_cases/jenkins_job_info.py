@@ -2,6 +2,7 @@
 from typeguard import typechecked
 
 from parat.enums.jenkins import JenkinsJobStatus
+from parat.utils.jenkins.common_utils import get_json_response
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
     get_jenkins_build_dict_url_end_build_number,
@@ -17,7 +18,8 @@ def get_jenkins_job_result_status(
     response_dict = get_jenkins_build_dict_url_end_build_number(
         jenkins_request_settings,
         url_end,
-        build_number)
+        build_number,
+        get_json_response=get_json_response)
     if response_dict is not None:
         if response_dict['result'] == 'SUCCESS':
             return JenkinsJobStatus.SUCCESS

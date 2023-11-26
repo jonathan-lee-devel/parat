@@ -14,6 +14,7 @@ from parat.cli.jenkins.basic.options import (
 )
 from parat.constants.jenkins_env import JENKINS_URL, JENKINS_USER, JENKINS_TOKEN
 from parat.use_cases.jenkins_job_info import get_jenkins_job_result_status
+from parat.utils.jenkins.common_utils import get_json_response
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
 from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
     get_jenkins_build_console_output, get_jenkins_build_dict,
@@ -109,7 +110,10 @@ def get_jenkins_build_json(verbose: bool, job_name: str, build_number: int) -> N
             os.getenv(JENKINS_URL),
             (os.getenv(JENKINS_USER), os.getenv(JENKINS_TOKEN)),
             1),
-        job_name, build_number)
+        job_name,
+        build_number,
+        get_json_response=get_json_response,
+    )
     logging.info('Jenkins JSON: \n%s', jenkins_dict)
 
 
