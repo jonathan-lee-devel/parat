@@ -529,7 +529,7 @@ overgeneral-exceptions=builtins.Exception
 # For libraries, evaluate if some users what to access the type hints at
 # runtime first, e.g., through ``typing.get_type_hints``. Applies to Python
 # versions 3.7 - 3.9
-runtime-typing = no
+runtime-typing = yes
 
 
 [DEPRECATED_BUILTINS]
