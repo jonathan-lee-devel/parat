@@ -7,8 +7,8 @@ class HttpRequestSettings:
     """Data class for HTTP request settings"""
     def __init__(
             self,
-            body: dict = None,
-            proxy: dict = None,
+            body: dict | None = None,
+            proxy: dict | None = None,
             ssl: bool = False,
             auth: tuple = None
     ):

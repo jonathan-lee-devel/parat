@@ -9,11 +9,8 @@ from typeguard import typechecked
 from parat.constants.jenkins_env import JENKINS_USER, JENKINS_TOKEN
 from parat.constants.jenkins_yaml import BUILD, HOSTS, JOBS, URL, END
 from parat.enums.jenkins import JenkinsJobStatus
-from parat.utils.jenkins.common_utils import get_json_response
 from parat.utils.jenkins.jekins_request_settings import JenkinsRequestSettings
-from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import (
-    get_jenkins_build_dict_url_end_build_number,
-)
+from parat.utils.jenkins.jenkins_rest_api.jenkins_utils import JenkinsUtils
 
 
 @typechecked
@@ -64,11 +61,9 @@ async def poll_jenkins_job_for_desirable_status(jenkins_request_settings: Jenkin
     unknown_responses_count = 0
     should_poll = True
     while should_poll:
-        response_dict = get_jenkins_build_dict_url_end_build_number(
-            jenkins_request_settings,
+        response_dict = JenkinsUtils().get_jenkins_build_dict_url_end_build_number(
             url_end,
-            build_number,
-            get_json_response=get_json_response)
+            build_number)
         if response_dict is None:
             logging.debug('None response for %s #%s', url_end, build_number)
             none_responses_count += 1
